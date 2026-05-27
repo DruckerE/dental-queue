@@ -1,0 +1,63 @@
+// Dental queue data model.
+// SQLite for local/dev; swap the datasource provider to "postgresql" for production.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Pooled connection used at runtime (serverless-friendly).
+  url       = env("DATABASE_URL")
+  // Direct connection used for migrations.
+  directUrl = env("DIRECT_URL")
+}
+
+model Dentist {
+  id        String  @id @default(cuid())
+  name      String
+  specialty String?
+  active    Boolean @default(true)
+
+  preferredTickets Ticket[] @relation("PreferredDentist")
+  assignedTickets  Ticket[] @relation("AssignedDentist")
+}
+
+model Service {
+  id     String  @id @default(cuid())
+  name   String
+  active Boolean @default(true)
+  // Display order in the check-in form.
+  sort   Int     @default(0)
+}
+
+model Ticket {
+  id          String @id @default(cuid())
+  // Per-day sequential number, e.g. 1, 2, 3...
+  number      Int
+  // Display code derived from number + day, e.g. "037".
+  code        String
+  patientName String
+  phone       String?
+  // JSON-encoded array of selected service names.
+  services    String @default("[]")
+  notes       String?
+
+  // Patient's optional preference.
+  preferredDentistId String?
+  preferredDentist   Dentist? @relation("PreferredDentist", fields: [preferredDentistId], references: [id])
+
+  // Staff assignment (can override the preference).
+  assignedDentistId String?
+  assignedDentist   Dentist? @relation("AssignedDentist", fields: [assignedDentistId], references: [id])
+
+  // waiting | serving | completed | cancelled
+  status String @default("waiting")
+
+  createdAt   DateTime  @default(now())
+  calledAt    DateTime?
+  completedAt DateTime?
+
+  @@index([status])
+  @@index([createdAt])
+}
