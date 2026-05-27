@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BrightSmile Dental — Queue",
-  description: "Scan, sign in, and get your queue number at BrightSmile Dental.",
+  title: "Bautista Dental Clinic — Queue",
+  description: "Scan, sign in, and get your queue number at Bautista Dental Clinic.",
 };
 
 export default function RootLayout({

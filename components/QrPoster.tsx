@@ -17,7 +17,7 @@ export function QrPoster() {
     <div className="mx-auto w-full max-w-md px-4 py-10">
       <div className="print-area rounded-3xl bg-white p-10 text-center shadow-sm ring-1 ring-slate-200">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-600">
-          BrightSmile Dental
+          Bautista Dental Clinic
         </p>
         <h1 className="mt-2 text-3xl font-bold text-slate-900">Scan to sign in</h1>
         <p className="mt-1 text-slate-500">Point your phone camera here to join the queue.</p>

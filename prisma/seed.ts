@@ -3,10 +3,10 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const dentists = [
-  { name: 'Dr. Maria Cruz', specialty: 'General Dentistry' },
-  { name: 'Dr. Jose Reyes', specialty: 'Orthodontics' },
-  { name: 'Dr. Anna Santos', specialty: 'Pediatric Dentistry' },
-  { name: 'Dr. Mark Lim', specialty: 'Oral Surgery' },
+  { name: 'Christine Bautista' },
+  { name: 'Renz WWE' },
+  { name: 'Kath We Ran' },
+  { name: 'Pat O Pat' },
 ]
 
 const services = [
@@ -23,19 +23,25 @@ const services = [
 ]
 
 async function main() {
-  // Only seed when empty so re-running doesn't create duplicates.
-  const [dentistCount, serviceCount] = await Promise.all([
-    prisma.dentist.count(),
-    prisma.service.count(),
-  ])
+  // Dentists: sync the table to exactly the list above (matched by name).
+  // Removing a dentist sets any ticket references to null (FK is ON DELETE SET
+  // NULL), so this is safe. Idempotent — once names match, nothing changes.
+  const desiredNames = dentists.map((d) => d.name)
+  const removed = await prisma.dentist.deleteMany({
+    where: { name: { notIn: desiredNames } },
+  })
+  if (removed.count > 0) console.log(`Removed ${removed.count} dentist(s) no longer in the list`)
 
-  if (dentistCount === 0) {
-    await prisma.dentist.createMany({ data: dentists })
-    console.log(`Seeded ${dentists.length} dentists`)
-  } else {
-    console.log(`Dentists already present (${dentistCount}), skipping`)
+  for (const dentist of dentists) {
+    const existing = await prisma.dentist.findFirst({ where: { name: dentist.name } })
+    if (!existing) {
+      await prisma.dentist.create({ data: dentist })
+      console.log(`Added dentist: ${dentist.name}`)
+    }
   }
 
+  // Services: seed only when the table is empty (names aren't changing).
+  const serviceCount = await prisma.service.count()
   if (serviceCount === 0) {
     await prisma.service.createMany({
       data: services.map((name, sort) => ({ name, sort })),

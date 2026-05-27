@@ -1,4 +1,4 @@
-# BrightSmile Dental — Customer Queue
+# Bautista Dental Clinic — Customer Queue
 
 A QR-based check-in and queue system for a dental clinic. Patients scan a QR
 code, sign in, pick the services they need (and optionally a preferred dentist),

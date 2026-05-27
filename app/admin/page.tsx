@@ -20,7 +20,7 @@ export default async function AdminPage() {
       <header className="mb-6 flex items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Queue management</h1>
-          <p className="text-sm text-slate-500">BrightSmile Dental — front desk</p>
+          <p className="text-sm text-slate-500">Bautista Dental Clinic — front desk</p>
         </div>
         <div className="flex items-center gap-2">
           <Link

@@ -103,7 +103,7 @@ export function TicketStatusView({ code }: TicketStatusViewProps) {
       ) : null}
 
       {ticket.status === 'completed' ? (
-        <p className="text-slate-600">Thank you for visiting BrightSmile Dental!</p>
+        <p className="text-slate-600">Thank you for visiting Bautista Dental Clinic!</p>
       ) : null}
 
       <dl className="mt-8 space-y-3 rounded-xl bg-slate-50 p-5 text-left text-sm">
