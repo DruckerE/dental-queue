@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useState } from 'react'
 
@@ -16,6 +17,13 @@ export function QrPoster() {
   return (
     <div className="mx-auto w-full max-w-md px-4 py-10">
       <div className="print-area rounded-3xl bg-white p-10 text-center shadow-sm ring-1 ring-slate-200">
+        <Image
+          src="/logo.png"
+          alt=""
+          width={383}
+          height={389}
+          className="mx-auto mb-3 h-20 w-auto"
+        />
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
           Bautista Dental Clinic
         </h1>

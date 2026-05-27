@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { CheckinForm } from '@/components/CheckinForm'
 import { listDentists, listServices } from '@/lib/catalog'
@@ -13,9 +14,14 @@ export default async function CheckinPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 py-8 sm:py-12">
       <header className="mb-10 text-center">
-        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-3xl bg-sky-600 text-4xl shadow-lg shadow-sky-600/20">
-          🦷
-        </div>
+        <Image
+          src="/logo.png"
+          alt="Bautista Dental Clinic logo"
+          width={383}
+          height={389}
+          priority
+          className="mx-auto mb-3 h-28 w-auto sm:h-32"
+        />
         <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           Bautista Dental Clinic
         </h1>
