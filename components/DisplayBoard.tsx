@@ -19,10 +19,12 @@ export function DisplayBoard() {
   return (
     <div className="grid min-h-screen grid-rows-[auto_1fr_auto] gap-6 bg-slate-900 p-6 text-white sm:p-10">
       <header className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-400">
+        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
           Bautista Dental Clinic
+        </h1>
+        <p className="mt-2 text-base font-semibold uppercase tracking-[0.4em] text-sky-400 sm:text-lg">
+          Now Serving
         </p>
-        <h1 className="mt-1 text-2xl font-bold text-slate-300">Now Serving</h1>
       </header>
 
       <main className="flex flex-col items-center justify-center">

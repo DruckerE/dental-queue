@@ -12,17 +12,19 @@ export default async function CheckinPage() {
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 py-8 sm:py-12">
-      <header className="mb-8 text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-sky-600">
+      <header className="mb-10 text-center">
+        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-3xl bg-sky-600 text-4xl shadow-lg shadow-sky-600/20">
+          🦷
+        </div>
+        <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl">
           Bautista Dental Clinic
-        </p>
-        <h1 className="mt-1 text-3xl font-bold text-slate-900">Welcome — please sign in</h1>
-        <p className="mt-2 text-slate-500">
-          Fill this in to join the queue. We&apos;ll give you a number to watch on the screen.
+        </h1>
+        <p className="mx-auto mt-4 max-w-sm text-lg text-slate-500">
+          Sign in below to join the queue — we&apos;ll give you a number to watch on the screen.
         </p>
       </header>
 
-      <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
+      <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
         <CheckinForm services={services} dentists={dentists} />
       </section>
 
