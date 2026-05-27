@@ -8,9 +8,10 @@ generator client {
 datasource db {
   provider  = "postgresql"
   // Pooled connection used at runtime (serverless-friendly).
+  // Both vars are injected automatically by the Vercel + Neon integration.
   url       = env("DATABASE_URL")
   // Direct connection used for migrations.
-  directUrl = env("DIRECT_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Dentist {
