@@ -40,6 +40,14 @@ and `/admin` on the front-desk computer.
 > reach it, run the app on a machine the phones can see — the clinic Wi-Fi (use
 > the Network URL printed by `next dev`) or a deployed URL.
 
+## Staff login
+
+The `/admin` page (and the ticket-update API) are protected by a single shared
+password. Set `STAFF_PASSWORD` in your environment (`.env` locally, Vercel env
+vars in production) and staff sign in at `/admin/login`. The session lasts 12
+hours. If `STAFF_PASSWORD` is **unset**, `/admin` stays open (handy for a first
+deploy) — set it before real use.
+
 ## Useful scripts
 
 ```bash
