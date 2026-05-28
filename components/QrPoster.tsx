@@ -18,10 +18,10 @@ export function QrPoster() {
     <div className="mx-auto w-full max-w-md px-4 py-10">
       <div className="print-area rounded-3xl bg-white p-10 text-center shadow-sm ring-1 ring-slate-200">
         <Image
-          src="/logo-wordmark-dark.png"
+          src="/logo-gold.png"
           alt="Bautista Dental Clinic"
           width={1200}
-          height={446}
+          height={444}
           className="mx-auto mb-4 h-20 w-auto"
         />
         <p className="text-xl font-semibold text-sky-600">Scan to sign in</p>
