@@ -21,11 +21,11 @@ export default async function AdminPage() {
       <header className="mb-6 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Image
-            src="/logo-wordmark-dark.png"
+            src="/logo-wordmark-gold-light.png"
             alt="Bautista Dental Clinic"
             width={1200}
-            height={446}
-            className="h-9 w-auto sm:h-11"
+            height={599}
+            className="h-10 w-auto sm:h-12"
           />
           <div>
             <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">Queue management</h1>

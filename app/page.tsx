@@ -15,12 +15,12 @@ export default async function CheckinPage() {
     <main className="mx-auto w-full max-w-xl px-4 py-8 sm:py-12">
       <header className="mb-10 text-center">
         <Image
-          src="/logo-wordmark-dark.png"
+          src="/logo-wordmark-gold-light.png"
           alt="Bautista Dental Clinic"
           width={1200}
-          height={446}
+          height={599}
           priority
-          className="mx-auto mb-5 h-24 w-auto sm:h-28"
+          className="mx-auto mb-5 h-28 w-auto sm:h-32"
         />
         <p className="mx-auto max-w-sm text-lg text-slate-500">
           Sign in below to join the queue — we&apos;ll give you a number to watch on the screen.
