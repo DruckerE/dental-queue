@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 export function StaffLogin() {
   const router = useRouter()
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -17,7 +18,7 @@ export function StaffLogin() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       })
       const body = await res.json().catch(() => null)
       if (!res.ok || !body?.success) {
@@ -34,13 +35,28 @@ export function StaffLogin() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
+        <label htmlFor="username" className="block text-sm font-semibold text-slate-700">
+          Username
+        </label>
+        <input
+          id="username"
+          type="text"
+          autoFocus
+          autoComplete="username"
+          autoCapitalize="none"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+        />
+      </div>
+
+      <div>
         <label htmlFor="password" className="block text-sm font-semibold text-slate-700">
-          Staff password
+          Password
         </label>
         <input
           id="password"
           type="password"
-          autoFocus
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

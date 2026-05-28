@@ -6,23 +6,26 @@ import {
   isAuthRequired,
   sessionCookieOptions,
   staffToken,
-  verifyPassword,
+  verifyCredentials,
 } from '@/lib/auth'
 import { fail, handleError, ok } from '@/lib/api'
 
-const loginSchema = z.object({ password: z.string().min(1, 'Enter the staff password') })
+const loginSchema = z.object({
+  username: z.string().min(1, 'Enter your username'),
+  password: z.string().min(1, 'Enter your password'),
+})
 
-// POST /api/auth/login — exchange the staff password for a session cookie.
+// POST /api/auth/login — exchange staff credentials for a session cookie.
 export async function POST(request: NextRequest) {
   try {
     if (!isAuthRequired()) {
       return fail('Staff login is not configured. Set STAFF_PASSWORD to enable it.', 503)
     }
     const body = await request.json().catch(() => ({}))
-    const { password } = loginSchema.parse(body)
+    const { username, password } = loginSchema.parse(body)
 
-    if (!verifyPassword(password)) {
-      return fail('Incorrect password', 401)
+    if (!verifyCredentials(username, password)) {
+      return fail('Incorrect username or password', 401)
     }
 
     const jar = await cookies()
