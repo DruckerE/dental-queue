@@ -6,6 +6,8 @@ import { submitCheckIn } from '@/lib/client'
 import type { DentistView, ServiceView } from '@/lib/types'
 
 interface CheckinFormProps {
+  branchId: string
+  branchSlug: string
   services: ServiceView[]
   dentists: DentistView[]
 }
@@ -26,7 +28,7 @@ const EMPTY: FormState = {
   notes: '',
 }
 
-export function CheckinForm({ services, dentists }: CheckinFormProps) {
+export function CheckinForm({ branchId, branchSlug, services, dentists }: CheckinFormProps) {
   const router = useRouter()
   const [form, setForm] = useState<FormState>(EMPTY)
   const [error, setError] = useState<string | null>(null)
@@ -58,13 +60,14 @@ export function CheckinForm({ services, dentists }: CheckinFormProps) {
     setSubmitting(true)
     try {
       const ticket = await submitCheckIn({
+        branchId,
         patientName: form.patientName.trim(),
         phone: form.phone.trim() || undefined,
         services: form.services,
         preferredDentistId: form.preferredDentistId || undefined,
         notes: form.notes.trim() || undefined,
       })
-      router.push(`/ticket/${ticket.code}`)
+      router.push(`/${branchSlug}/ticket/${ticket.code}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not sign you in. Please try again.')
       setSubmitting(false)

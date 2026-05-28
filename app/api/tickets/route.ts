@@ -2,11 +2,15 @@ import type { NextRequest } from 'next/server'
 import { createTicket, listTickets } from '@/lib/tickets'
 import { checkInSchema } from '@/lib/validation'
 import { isTicketStatus, type TicketStatus } from '@/lib/ticket'
-import { handleError, ok } from '@/lib/api'
+import { fail, handleError, ok } from '@/lib/api'
 
-// GET /api/tickets?status=waiting,serving — today's tickets, optionally filtered.
+// GET /api/tickets?branchId=...&status=waiting,serving — a branch's tickets today.
 export async function GET(request: NextRequest) {
   try {
+    const branchId = request.nextUrl.searchParams.get('branchId')
+    if (!branchId) {
+      return fail('Missing branchId', 400)
+    }
     const raw = request.nextUrl.searchParams.get('status')
     const statuses = raw
       ? raw
@@ -14,7 +18,7 @@ export async function GET(request: NextRequest) {
           .map((s) => s.trim())
           .filter(isTicketStatus)
       : undefined
-    const tickets = await listTickets(statuses as TicketStatus[] | undefined)
+    const tickets = await listTickets(branchId, statuses as TicketStatus[] | undefined)
     return ok(tickets)
   } catch (error) {
     return handleError(error)

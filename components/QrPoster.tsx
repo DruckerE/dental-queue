@@ -4,15 +4,19 @@ import Image from 'next/image'
 import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useState } from 'react'
 
-export function QrPoster() {
-  // The check-in URL is the site origin. Read it on the client so the QR
-  // points at whatever host the staff actually opened (localhost, LAN IP, or
-  // a deployed domain).
+interface QrPosterProps {
+  branchSlug: string
+  branchName: string
+}
+
+export function QrPoster({ branchSlug, branchName }: QrPosterProps) {
+  // The QR points at this branch's check-in page on whatever host the staff
+  // opened (localhost, LAN IP, or the deployed domain).
   const [url, setUrl] = useState('')
 
   useEffect(() => {
-    setUrl(window.location.origin)
-  }, [])
+    setUrl(`${window.location.origin}/${branchSlug}`)
+  }, [branchSlug])
 
   return (
     <div className="mx-auto w-full max-w-md px-4 py-10">
@@ -25,6 +29,7 @@ export function QrPoster() {
           className="mx-auto mb-4 h-20 w-auto"
         />
         <p className="text-xl font-semibold text-sky-600">Scan to sign in</p>
+        <p className="mt-1 text-lg font-semibold text-slate-700">{branchName} Branch</p>
         <p className="mt-1 text-slate-500">Point your phone camera here to join the queue.</p>
 
         <div className="my-8 flex justify-center">

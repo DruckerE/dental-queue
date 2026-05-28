@@ -7,6 +7,9 @@ import type { TicketView } from '@/lib/types'
 
 interface TicketStatusViewProps {
   code: string
+  branchId: string
+  branchSlug: string
+  branchName: string
 }
 
 interface TicketStatusPayload {
@@ -40,9 +43,14 @@ const STATUS_META: Record<
   },
 }
 
-export function TicketStatusView({ code }: TicketStatusViewProps) {
+export function TicketStatusView({
+  code,
+  branchId,
+  branchSlug,
+  branchName,
+}: TicketStatusViewProps) {
   const { data, error, isLoading } = useSWR<TicketStatusPayload>(
-    `/api/tickets/code/${code}`,
+    `/api/tickets/code/${code}?branchId=${branchId}`,
     fetcher,
     { refreshInterval: 4000 },
   )
@@ -57,7 +65,10 @@ export function TicketStatusView({ code }: TicketStatusViewProps) {
         <p className="text-slate-600">
           We couldn&apos;t find ticket <span className="font-mono font-semibold">#{code}</span>.
         </p>
-        <Link href="/" className="mt-4 inline-block font-semibold text-sky-600 hover:text-sky-700">
+        <Link
+          href={`/${branchSlug}`}
+          className="mt-4 inline-block font-semibold text-sky-600 hover:text-sky-700"
+        >
           ← Back to sign-in
         </Link>
       </div>
@@ -107,6 +118,10 @@ export function TicketStatusView({ code }: TicketStatusViewProps) {
       ) : null}
 
       <dl className="mt-8 space-y-3 rounded-xl bg-slate-50 p-5 text-left text-sm">
+        <div className="flex justify-between gap-4">
+          <dt className="text-slate-500">Branch</dt>
+          <dd className="text-right font-medium text-slate-800">{branchName}</dd>
+        </div>
         <div className="flex justify-between gap-4">
           <dt className="text-slate-500">Services</dt>
           <dd className="text-right font-medium text-slate-800">

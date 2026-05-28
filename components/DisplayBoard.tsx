@@ -5,10 +5,17 @@ import useSWR from 'swr'
 import { fetcher } from '@/lib/client'
 import type { TicketView } from '@/lib/types'
 
-export function DisplayBoard() {
-  const { data } = useSWR<TicketView[]>('/api/tickets?status=waiting,serving', fetcher, {
-    refreshInterval: 3000,
-  })
+interface DisplayBoardProps {
+  branchId: string
+  branchName: string
+}
+
+export function DisplayBoard({ branchId, branchName }: DisplayBoardProps) {
+  const { data } = useSWR<TicketView[]>(
+    `/api/tickets?branchId=${branchId}&status=waiting,serving`,
+    fetcher,
+    { refreshInterval: 3000 },
+  )
 
   const tickets = data ?? []
   // Most recently called first so the latest "now serving" is prominent.
@@ -28,7 +35,7 @@ export function DisplayBoard() {
           className="mx-auto mb-3 h-20 w-auto drop-shadow-lg sm:h-24"
         />
         <p className="text-base font-semibold uppercase tracking-[0.4em] text-sky-400 sm:text-lg">
-          Now Serving
+          {branchName} — Now Serving
         </p>
       </header>
 

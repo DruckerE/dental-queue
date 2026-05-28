@@ -23,6 +23,7 @@ type TicketRow = {
   services: string
   notes: string | null
   status: string
+  branchId: string | null
   preferredDentistId: string | null
   assignedDentistId: string | null
   createdAt: Date
@@ -42,6 +43,7 @@ function toView(row: TicketRow): TicketView {
     services: decodeServices(row.services),
     notes: row.notes,
     status: row.status as TicketStatus,
+    branchId: row.branchId,
     preferredDentistId: row.preferredDentistId,
     preferredDentistName: row.preferredDentist?.name ?? null,
     assignedDentistId: row.assignedDentistId,
@@ -52,14 +54,15 @@ function toView(row: TicketRow): TicketView {
   }
 }
 
-// Creates a ticket with the next per-day sequential number. Wrapped in a
-// transaction so concurrent check-ins don't collide on the same number.
+// Creates a ticket with the next per-day sequential number, scoped to the
+// branch. Wrapped in a transaction so concurrent check-ins at the same branch
+// don't collide on the same number.
 export async function createTicket(input: CheckInInput): Promise<TicketView> {
   const dayStart = startOfDay()
 
   const row = await prisma.$transaction(async (tx) => {
     const todayCount = await tx.ticket.count({
-      where: { createdAt: { gte: dayStart } },
+      where: { branchId: input.branchId, createdAt: { gte: dayStart } },
     })
     const number = todayCount + 1
 
@@ -67,6 +70,7 @@ export async function createTicket(input: CheckInInput): Promise<TicketView> {
       data: {
         number,
         code: formatTicketCode(number),
+        branchId: input.branchId,
         patientName: input.patientName,
         phone: input.phone ?? null,
         services: encodeServices(input.services),
@@ -80,10 +84,14 @@ export async function createTicket(input: CheckInInput): Promise<TicketView> {
   return toView(row)
 }
 
-// Lists tickets for today, newest activity first. Optionally filter by status.
-export async function listTickets(statuses?: readonly TicketStatus[]): Promise<TicketView[]> {
+// Lists a branch's tickets for today, in queue order. Optional status filter.
+export async function listTickets(
+  branchId: string,
+  statuses?: readonly TicketStatus[],
+): Promise<TicketView[]> {
   const rows = await prisma.ticket.findMany({
     where: {
+      branchId,
       createdAt: { gte: startOfDay() },
       ...(statuses && statuses.length > 0 ? { status: { in: [...statuses] } } : {}),
     },
@@ -93,18 +101,19 @@ export async function listTickets(statuses?: readonly TicketStatus[]): Promise<T
   return rows.map(toView)
 }
 
-export async function getTicketByCode(code: string): Promise<TicketView | null> {
+export async function getTicketByCode(branchId: string, code: string): Promise<TicketView | null> {
   const row = await prisma.ticket.findFirst({
-    where: { code, createdAt: { gte: startOfDay() } },
+    where: { branchId, code, createdAt: { gte: startOfDay() } },
     include: ticketInclude,
   })
   return row ? toView(row) : null
 }
 
-// How many waiting tickets are ahead of the given ticket number.
-export async function waitingAhead(number: number): Promise<number> {
+// How many waiting tickets are ahead of the given number within the branch.
+export async function waitingAhead(branchId: string, number: number): Promise<number> {
   return prisma.ticket.count({
     where: {
+      branchId,
       status: 'waiting',
       number: { lt: number },
       createdAt: { gte: startOfDay() },

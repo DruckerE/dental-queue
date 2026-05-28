@@ -14,11 +14,25 @@ datasource db {
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
+// A clinic location. Each branch runs its own independent queue.
+model Branch {
+  id     String  @id @default(cuid())
+  // URL-friendly id, e.g. "las-pinas".
+  slug   String  @unique
+  name   String
+  sort   Int     @default(0)
+  active Boolean @default(true)
+
+  tickets Ticket[]
+}
+
+// Dentists are shared across all branches (they alternate between locations).
 model Dentist {
   id        String  @id @default(cuid())
   name      String
   specialty String?
   active    Boolean @default(true)
+  sort      Int     @default(0)
 
   preferredTickets Ticket[] @relation("PreferredDentist")
   assignedTickets  Ticket[] @relation("AssignedDentist")
@@ -44,6 +58,10 @@ model Ticket {
   services    String @default("[]")
   notes       String?
 
+  // The branch this ticket belongs to.
+  branchId String?
+  branch   Branch? @relation(fields: [branchId], references: [id])
+
   // Patient's optional preference.
   preferredDentistId String?
   preferredDentist   Dentist? @relation("PreferredDentist", fields: [preferredDentistId], references: [id])
@@ -59,6 +77,6 @@ model Ticket {
   calledAt    DateTime?
   completedAt DateTime?
 
-  @@index([status])
+  @@index([branchId, status])
   @@index([createdAt])
 }

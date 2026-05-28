@@ -2,12 +2,14 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const dentists = [
-  { name: 'Christine Bautista' },
-  { name: 'Renz WWE' },
-  { name: 'Kath We Ran' },
-  { name: 'Pat O Pat' },
+const branches = [
+  { slug: 'las-pinas', name: 'Las Piñas' },
+  { slug: 'imus', name: 'Imus' },
+  { slug: 'muntinlupa', name: 'Muntinlupa' },
 ]
+
+// Dentists are shared across all branches (they alternate between locations).
+const dentists = ['Dr. Tin', 'Dr. Renz', 'Dr. Kath', 'Dr. Pat', 'Dr. Eli']
 
 const services = [
   'Consultation / Check-up',
@@ -23,24 +25,38 @@ const services = [
 ]
 
 async function main() {
-  // Dentists: sync the table to exactly the list above (matched by name).
-  // Removing a dentist sets any ticket references to null (FK is ON DELETE SET
-  // NULL), so this is safe. Idempotent — once names match, nothing changes.
-  const desiredNames = dentists.map((d) => d.name)
-  const removed = await prisma.dentist.deleteMany({
-    where: { name: { notIn: desiredNames } },
+  // Branches: sync to exactly the list above (matched by slug). Removing a
+  // branch sets its tickets' branchId to null (FK ON DELETE SET NULL).
+  const branchSlugs = branches.map((b) => b.slug)
+  const removedBranches = await prisma.branch.deleteMany({
+    where: { slug: { notIn: branchSlugs } },
   })
-  if (removed.count > 0) console.log(`Removed ${removed.count} dentist(s) no longer in the list`)
+  if (removedBranches.count > 0) console.log(`Removed ${removedBranches.count} branch(es)`)
+  for (const [sort, branch] of branches.entries()) {
+    await prisma.branch.upsert({
+      where: { slug: branch.slug },
+      update: { name: branch.name, sort },
+      create: { ...branch, sort },
+    })
+  }
+  console.log(`Branches ready: ${branchSlugs.join(', ')}`)
 
-  for (const dentist of dentists) {
-    const existing = await prisma.dentist.findFirst({ where: { name: dentist.name } })
-    if (!existing) {
-      await prisma.dentist.create({ data: dentist })
-      console.log(`Added dentist: ${dentist.name}`)
+  // Dentists: sync to exactly the list above (matched by name).
+  const removedDentists = await prisma.dentist.deleteMany({
+    where: { name: { notIn: dentists } },
+  })
+  if (removedDentists.count > 0) console.log(`Removed ${removedDentists.count} dentist(s)`)
+  for (const [sort, name] of dentists.entries()) {
+    const existing = await prisma.dentist.findFirst({ where: { name } })
+    if (existing) {
+      await prisma.dentist.update({ where: { id: existing.id }, data: { sort } })
+    } else {
+      await prisma.dentist.create({ data: { name, sort } })
     }
   }
+  console.log(`Dentists ready: ${dentists.join(', ')}`)
 
-  // Services: seed only when the table is empty (names aren't changing).
+  // Services: seed only when empty (names aren't changing).
   const serviceCount = await prisma.service.count()
   if (serviceCount === 0) {
     await prisma.service.createMany({

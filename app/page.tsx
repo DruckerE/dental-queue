@@ -1,18 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { CheckinForm } from '@/components/CheckinForm'
-import { listDentists, listServices } from '@/lib/catalog'
+import { listBranches } from '@/lib/catalog'
 
-// Always read the live catalog so newly added dentists/services appear without
-// a rebuild.
 export const dynamic = 'force-dynamic'
 
-// Patient-facing check-in screen — the destination of the QR code.
-export default async function CheckinPage() {
-  const [services, dentists] = await Promise.all([listServices(), listDentists()])
+// Branch picker — shown at the root. Each branch links to its own check-in.
+export default async function HomePage() {
+  const branches = await listBranches()
 
   return (
-    <main className="mx-auto w-full max-w-xl px-4 py-8 sm:py-12">
+    <main className="mx-auto w-full max-w-md px-4 py-12">
       <header className="mb-10 text-center">
         <Image
           src="/logo-gold.png"
@@ -20,28 +17,34 @@ export default async function CheckinPage() {
           width={1200}
           height={444}
           priority
-          className="mx-auto mb-5 h-28 w-auto sm:h-32"
+          className="mx-auto mb-4 h-24 w-auto sm:h-28"
         />
-        <p className="mx-auto max-w-sm text-lg text-slate-500">
-          Sign in below to join the queue — we&apos;ll give you a number to watch on the screen.
-        </p>
+        <p className="text-lg text-slate-500">Choose your branch to sign in</p>
       </header>
 
-      <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
-        <CheckinForm services={services} dentists={dentists} />
-      </section>
+      <nav className="space-y-3">
+        {branches.map((branch) => (
+          <Link
+            key={branch.id}
+            href={`/${branch.slug}`}
+            className="flex items-center justify-between rounded-2xl bg-white px-6 py-5 text-lg font-semibold text-slate-800 shadow-sm ring-1 ring-slate-200 transition hover:ring-sky-300"
+          >
+            {branch.name}
+            <span aria-hidden className="text-sky-500">
+              →
+            </span>
+          </Link>
+        ))}
+        {branches.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-slate-300 px-6 py-8 text-center text-slate-400">
+            No branches configured yet.
+          </p>
+        ) : null}
+      </nav>
 
-      <footer className="mt-8 flex justify-center gap-4 text-xs text-slate-400">
-        <Link href="/display" className="hover:text-slate-600">
-          Waiting-room display
-        </Link>
-        <span>·</span>
+      <footer className="mt-8 text-center text-xs text-slate-400">
         <Link href="/admin" className="hover:text-slate-600">
-          Staff
-        </Link>
-        <span>·</span>
-        <Link href="/qr" className="hover:text-slate-600">
-          QR poster
+          Staff sign-in
         </Link>
       </footer>
     </main>

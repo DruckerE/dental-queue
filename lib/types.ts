@@ -19,6 +19,7 @@ export interface TicketView {
   services: string[]
   notes: string | null
   status: TicketStatus
+  branchId: string | null
   preferredDentistId: string | null
   preferredDentistName: string | null
   assignedDentistId: string | null
@@ -36,5 +37,11 @@ export interface DentistView {
 
 export interface ServiceView {
   id: string
+  name: string
+}
+
+export interface BranchView {
+  id: string
+  slug: string
   name: string
 }

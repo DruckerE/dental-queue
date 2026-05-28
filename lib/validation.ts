@@ -3,6 +3,7 @@ import { TICKET_STATUSES } from './ticket'
 
 // Patient check-in payload.
 export const checkInSchema = z.object({
+  branchId: z.string().trim().min(1, 'Missing branch'),
   patientName: z.string().trim().min(2, 'Please enter your name').max(80),
   phone: z
     .string()
