@@ -17,10 +17,10 @@ export default async function StaffLoginPage() {
       <section className="w-full rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <header className="mb-6 text-center">
           <Image
-            src="/logo-wordmark-gold-light.png"
+            src="/logo-gold.png"
             alt="Bautista Dental Clinic"
             width={1200}
-            height={599}
+            height={444}
             priority
             className="mx-auto mb-4 h-14 w-auto sm:h-16"
           />

@@ -21,10 +21,10 @@ export default async function AdminPage() {
       <header className="mb-6 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Image
-            src="/logo-wordmark-gold-light.png"
+            src="/logo-gold.png"
             alt="Bautista Dental Clinic"
             width={1200}
-            height={599}
+            height={444}
             className="h-10 w-auto sm:h-12"
           />
           <div>
