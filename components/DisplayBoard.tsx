@@ -21,10 +21,10 @@ export function DisplayBoard() {
     <div className="grid min-h-screen grid-rows-[auto_1fr_auto] gap-6 bg-slate-900 p-6 text-white sm:p-10">
       <header className="text-center">
         <Image
-          src="/logo-wordmark-gold.png"
+          src="/logo-display.png"
           alt="Bautista Dental Clinic"
           width={1200}
-          height={443}
+          height={599}
           className="mx-auto mb-3 h-20 w-auto drop-shadow-lg sm:h-24"
         />
         <p className="text-base font-semibold uppercase tracking-[0.4em] text-sky-400 sm:text-lg">
