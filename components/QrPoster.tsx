@@ -44,7 +44,6 @@ export function QrPoster() {
           )}
         </div>
 
-        <p className="break-all text-xs text-slate-400">{url}</p>
         <ol className="mx-auto mt-6 max-w-xs space-y-1 text-left text-sm text-slate-600">
           <li>1. Open your phone camera.</li>
           <li>2. Scan the code above.</li>
