@@ -18,16 +18,13 @@ export function QrPoster() {
     <div className="mx-auto w-full max-w-md px-4 py-10">
       <div className="print-area rounded-3xl bg-white p-10 text-center shadow-sm ring-1 ring-slate-200">
         <Image
-          src="/logo.png"
-          alt=""
-          width={383}
-          height={389}
-          className="mx-auto mb-3 h-20 w-auto"
+          src="/logo-wordmark-dark.png"
+          alt="Bautista Dental Clinic"
+          width={1200}
+          height={446}
+          className="mx-auto mb-4 h-20 w-auto"
         />
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-          Bautista Dental Clinic
-        </h1>
-        <p className="mt-3 text-xl font-semibold text-sky-600">Scan to sign in</p>
+        <p className="text-xl font-semibold text-sky-600">Scan to sign in</p>
         <p className="mt-1 text-slate-500">Point your phone camera here to join the queue.</p>
 
         <div className="my-8 flex justify-center">

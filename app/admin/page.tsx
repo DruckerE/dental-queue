@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { AdminBoard } from '@/components/AdminBoard'
@@ -18,9 +19,18 @@ export default async function AdminPage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <header className="mb-6 flex items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Queue management</h1>
-          <p className="text-sm text-slate-500">Bautista Dental Clinic — front desk</p>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo-wordmark-dark.png"
+            alt="Bautista Dental Clinic"
+            width={1200}
+            height={446}
+            className="h-9 w-auto sm:h-11"
+          />
+          <div>
+            <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">Queue management</h1>
+            <p className="text-sm text-slate-500">Front desk</p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Link

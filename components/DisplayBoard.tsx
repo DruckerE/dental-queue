@@ -21,16 +21,13 @@ export function DisplayBoard() {
     <div className="grid min-h-screen grid-rows-[auto_1fr_auto] gap-6 bg-slate-900 p-6 text-white sm:p-10">
       <header className="text-center">
         <Image
-          src="/logo.png"
-          alt=""
-          width={383}
-          height={389}
-          className="mx-auto mb-2 h-16 w-auto drop-shadow-lg sm:h-20"
+          src="/logo-wordmark-gold.png"
+          alt="Bautista Dental Clinic"
+          width={1200}
+          height={443}
+          className="mx-auto mb-3 h-20 w-auto drop-shadow-lg sm:h-24"
         />
-        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-          Bautista Dental Clinic
-        </h1>
-        <p className="mt-2 text-base font-semibold uppercase tracking-[0.4em] text-sky-400 sm:text-lg">
+        <p className="text-base font-semibold uppercase tracking-[0.4em] text-sky-400 sm:text-lg">
           Now Serving
         </p>
       </header>

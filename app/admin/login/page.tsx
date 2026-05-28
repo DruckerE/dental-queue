@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import { StaffLogin } from '@/components/StaffLogin'
 import { isAuthed } from '@/lib/auth'
@@ -13,15 +14,22 @@ export default async function StaffLoginPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 items-center px-4 py-10">
-      <section className="w-full rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-        <header className="mb-6 text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-sky-600">
-            Bautista Dental Clinic
-          </p>
-          <h1 className="mt-1 text-2xl font-bold text-slate-900">Staff sign-in</h1>
-          <p className="mt-1 text-sm text-slate-500">Front-desk access only.</p>
-        </header>
-        <StaffLogin />
+      <section className="w-full overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+        <div className="bg-slate-900 px-8 py-7 text-center">
+          <Image
+            src="/logo-wordmark-gold.png"
+            alt="Bautista Dental Clinic"
+            width={1200}
+            height={443}
+            priority
+            className="mx-auto h-12 w-auto sm:h-14"
+          />
+        </div>
+        <div className="p-8">
+          <h1 className="text-center text-xl font-bold text-slate-900">Staff sign-in</h1>
+          <p className="mt-1 mb-6 text-center text-sm text-slate-500">Front-desk access only.</p>
+          <StaffLogin />
+        </div>
       </section>
     </main>
   )
