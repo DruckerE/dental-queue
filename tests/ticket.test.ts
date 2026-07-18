@@ -51,11 +51,18 @@ describe('isTicketStatus', () => {
 })
 
 describe('startOfDay', () => {
-  it('returns midnight of the given date', () => {
-    const d = startOfDay(new Date('2026-05-27T15:42:09'))
-    expect(d.getHours()).toBe(0)
-    expect(d.getMinutes()).toBe(0)
-    expect(d.getSeconds()).toBe(0)
+  it('rolls over at Manila midnight (UTC+8), not UTC midnight', () => {
+    // 15:42 UTC is 23:42 the same day in Manila, whose day began at
+    // 16:00 UTC the previous day.
+    const d = startOfDay(new Date('2026-05-27T15:42:09Z'))
+    expect(d.toISOString()).toBe('2026-05-26T16:00:00.000Z')
+  })
+
+  it('keeps an early-morning Manila check-in on the current Manila day', () => {
+    // 22:30 UTC is 06:30 the NEXT day in Manila; it must not be filed under
+    // the previous UTC day.
+    const d = startOfDay(new Date('2026-05-27T22:30:00Z'))
+    expect(d.toISOString()).toBe('2026-05-27T16:00:00.000Z')
   })
 })
 

@@ -19,12 +19,22 @@ export function formatTicketCode(num: number): string {
   return String(num).padStart(3, '0')
 }
 
-// Midnight (local server time) for the supplied date. Used to scope the daily
-// ticket counter so numbers reset each day.
+// The clinic operates in the Philippines (Asia/Manila, UTC+8, no DST). The
+// daily ticket counter and "today" queue filters must roll over at Manila
+// midnight — NOT the server's UTC midnight. Otherwise a patient who checks in
+// during the early Manila morning is filed under the previous day and vanishes
+// from the board once UTC crosses midnight (which is 8 AM in Manila).
+const MANILA_OFFSET_MS = 8 * 60 * 60 * 1000
+
+// The UTC instant of the most recent Manila midnight for the supplied time.
 export function startOfDay(date: Date = new Date()): Date {
-  const copy = new Date(date)
-  copy.setHours(0, 0, 0, 0)
-  return copy
+  const manila = new Date(date.getTime() + MANILA_OFFSET_MS)
+  const manilaMidnightAsUtc = Date.UTC(
+    manila.getUTCFullYear(),
+    manila.getUTCMonth(),
+    manila.getUTCDate(),
+  )
+  return new Date(manilaMidnightAsUtc - MANILA_OFFSET_MS)
 }
 
 // Serialize/parse the selected services stored as a JSON string column.
