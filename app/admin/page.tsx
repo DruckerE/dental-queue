@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { AdminBoard } from '@/components/AdminBoard'
 import { LogoutButton } from '@/components/LogoutButton'
@@ -35,23 +34,6 @@ export default async function AdminPage() {
         </div>
         {isAuthRequired() ? <LogoutButton /> : null}
       </header>
-
-      <section className="mb-6 rounded-xl border border-slate-200 bg-white p-4">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
-          QR posters
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {branches.map((branch) => (
-            <Link
-              key={branch.id}
-              href={`/${branch.slug}/qr`}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-sky-400 hover:text-sky-700"
-            >
-              {branch.name} →
-            </Link>
-          ))}
-        </div>
-      </section>
 
       <AdminBoard branches={branches} dentists={dentists} />
     </main>
