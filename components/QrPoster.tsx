@@ -52,14 +52,6 @@ export function QrPoster({ branchSlug, branchName }: QrPosterProps) {
           <li>3. Fill in your details and get a number.</li>
         </ol>
       </div>
-
-      <button
-        type="button"
-        onClick={() => window.print()}
-        className="no-print mt-6 w-full rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white hover:bg-slate-700"
-      >
-        Print poster
-      </button>
     </div>
   )
 }
