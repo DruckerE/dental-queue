@@ -15,7 +15,7 @@ interface CheckinFormProps {
 interface FormState {
   patientName: string
   phone: string
-  services: string[]
+  service: string
   preferredDentistId: string
   notes: string
 }
@@ -23,7 +23,7 @@ interface FormState {
 const EMPTY: FormState = {
   patientName: '',
   phone: '',
-  services: [],
+  service: '',
   preferredDentistId: '',
   notes: '',
 }
@@ -34,16 +34,6 @@ export function CheckinForm({ branchId, branchSlug, services, dentists }: Checki
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  // Immutable toggle of a selected service name.
-  function toggleService(name: string) {
-    setForm((prev) => ({
-      ...prev,
-      services: prev.services.includes(name)
-        ? prev.services.filter((s) => s !== name)
-        : [...prev.services, name],
-    }))
-  }
-
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     setError(null)
@@ -52,8 +42,8 @@ export function CheckinForm({ branchId, branchSlug, services, dentists }: Checki
       setError('Please enter your name.')
       return
     }
-    if (form.services.length === 0) {
-      setError('Please pick at least one service.')
+    if (!form.service) {
+      setError('Please choose what you need today.')
       return
     }
 
@@ -63,7 +53,7 @@ export function CheckinForm({ branchId, branchSlug, services, dentists }: Checki
         branchId,
         patientName: form.patientName.trim(),
         phone: form.phone.trim() || undefined,
-        services: form.services,
+        services: [form.service],
         preferredDentistId: form.preferredDentistId || undefined,
         notes: form.notes.trim() || undefined,
       })
@@ -107,32 +97,24 @@ export function CheckinForm({ branchId, branchSlug, services, dentists }: Checki
         />
       </div>
 
-      <fieldset>
-        <legend className="text-sm font-semibold text-slate-700">
+      <div>
+        <label htmlFor="service" className="block text-sm font-semibold text-slate-700">
           What do you need today? <span className="text-rose-500">*</span>
-        </legend>
-        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {services.map((service) => {
-            const selected = form.services.includes(service.name)
-            return (
-              <button
-                type="button"
-                key={service.id}
-                onClick={() => toggleService(service.name)}
-                aria-pressed={selected}
-                className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition ${
-                  selected
-                    ? 'border-sky-500 bg-sky-50 text-sky-800 ring-2 ring-sky-200'
-                    : 'border-slate-300 bg-white text-slate-700 hover:border-sky-300'
-                }`}
-              >
-                {selected ? '✓ ' : ''}
-                {service.name}
-              </button>
-            )
-          })}
-        </div>
-      </fieldset>
+        </label>
+        <select
+          id="service"
+          value={form.service}
+          onChange={(e) => setForm((prev) => ({ ...prev, service: e.target.value }))}
+          className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+        >
+          <option value="">Select a service…</option>
+          {services.map((service) => (
+            <option key={service.id} value={service.name}>
+              {service.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div>
         <label htmlFor="dentist" className="block text-sm font-semibold text-slate-700">

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import useSWR from 'swr'
 import { AdminTicketCard } from '@/components/AdminTicketCard'
+import { DailyTally } from '@/components/DailyTally'
 import { fetcher, patchTicket } from '@/lib/client'
 import type { BranchView, DentistView, TicketView } from '@/lib/types'
 import type { UpdateTicketInput } from '@/lib/validation'
@@ -104,6 +105,8 @@ export function AdminBoard({ branches, dentists }: AdminBoardProps) {
           Couldn&apos;t load the queue. Retrying…
         </p>
       ) : null}
+
+      <DailyTally branch={selectedBranch} tickets={tickets} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Column title="Now serving" count={serving.length}>

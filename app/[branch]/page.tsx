@@ -44,15 +44,7 @@ export default async function CheckinPage(props: PageProps<'/[branch]'>) {
 
       <footer className="mt-8 flex justify-center gap-4 text-xs text-slate-400">
         <Link href={`/${branch.slug}/display`} className="hover:text-slate-600">
-          Display
-        </Link>
-        <span>·</span>
-        <Link href="/admin" className="hover:text-slate-600">
-          Staff
-        </Link>
-        <span>·</span>
-        <Link href={`/${branch.slug}/qr`} className="hover:text-slate-600">
-          QR poster
+          Queue screen
         </Link>
         <span>·</span>
         <Link href="/" className="hover:text-slate-600">
