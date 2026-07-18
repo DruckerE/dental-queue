@@ -42,8 +42,11 @@ export default async function HomePage() {
         ) : null}
       </nav>
 
-      <footer className="mt-8 text-center text-xs text-slate-400">
-        <Link href="/admin" className="hover:text-slate-600">
+      <footer className="mt-10 text-center">
+        <Link
+          href="/admin"
+          className="inline-block rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-400 hover:text-sky-700"
+        >
           Staff sign-in
         </Link>
       </footer>
